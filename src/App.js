@@ -442,9 +442,7 @@ const App = () => {
             <DetailsText>
               <Icon>📍</Icon> Salón de Eventos "Las Estrellas", Av. Principal #123
             </DetailsText>
-            <DetailsText>
-              <Icon>👗</Icon> Código de vestimenta: Formal elegante
-            </DetailsText>
+            
           </motion.div>
         </AnimatedSection>
 
