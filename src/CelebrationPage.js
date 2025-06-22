@@ -75,15 +75,20 @@ const CelebrationMessage = styled(motion.div)`
 
   @media (max-width: 768px) {
     padding: 0.5rem;
+    justify-content: flex-start;
+    padding-top: 10vh;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 8vh;
   }
 `;
 
 const MessageContent = styled.div`
-  padding: 2.5rem 1.5rem;
-  width: 90%;
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
+  padding: 2.5rem 2rem;
+  width: 85%;
+  max-width: 550px;
+  margin: 0 0 0 5%;
   position: relative;
   z-index: 2;
   background: rgba(25, 25, 60, 0.95);
@@ -94,6 +99,10 @@ const MessageContent = styled.div`
   overflow: hidden;
   animation: ${curtainOpen} 1s ease-out forwards;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
 
   &::after {
     content: "";
@@ -108,20 +117,32 @@ const MessageContent = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
-    width: 95%;
-    border-radius: 15px;
+    padding: 2rem 1.5rem;
+    width: 85%;
+    max-width: 85%;
+    margin: 0 0 0 5%;
+    border-radius: 18px;
     backdrop-filter: blur(8px);
   }
 
   @media (max-width: 480px) {
-    padding: 1.2rem 0.8rem;
-    border-radius: 12px;
+    padding: 1.8rem 1.2rem;
+    width: 88%;
+    max-width: 88%;
+    margin: 0 0 0 5%;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 1.5rem 1rem;
+    width: 90%;
+    max-width: 90%;
+    margin: 0 0 0 3%;
   }
 `;
 
 const CelebrationTitle = styled.h2`
-  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
   margin-bottom: 1.2rem;
   background: linear-gradient(to right, #d8b8f8, #b88af8, #986af8);
   -webkit-background-clip: text;
@@ -134,13 +155,14 @@ const CelebrationTitle = styled.h2`
   font-family: 'Playfair Display', serif;
   animation: ${textGlow} 3s infinite ease-in-out;
   line-height: 1.2;
+  width: 100%;
+  text-align: left;
   
   &::after {
     content: "";
     position: absolute;
     bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 80px;
     height: 2px;
     background: linear-gradient(to right, #b88af8, #986af8, #b88af8);
@@ -148,28 +170,42 @@ const CelebrationTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
     margin-bottom: 1rem;
     
     &::after {
-      width: 60px;
+      width: 70px;
       bottom: -6px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+    margin-bottom: 0.8rem;
+    
+    &::after {
+      width: 60px;
     }
   }
 `;
 
 const CelebrationText = styled.p`
-  font-size: clamp(1rem, 3.2vw, 1.4rem);
+  font-size: clamp(1rem, 3.2vw, 1.25rem);
   color: #f0e6ff;
-  max-width: 90%;
-  margin: 1.2rem auto;
+  width: 100%;
+  margin: 0.8rem 0;
   line-height: 1.5;
   animation: ${textGlow} 3s infinite ease-in-out;
+  text-align: left;
   
   @media (max-width: 768px) {
-    font-size: clamp(0.95rem, 4vw, 1.2rem);
-    margin: 1rem auto;
-    max-width: 95%;
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    margin: 0.7rem 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: clamp(0.9rem, 4.5vw, 1rem);
+    margin: 0.6rem 0;
   }
 `;
 
@@ -177,8 +213,8 @@ const CelebrationButton = styled(motion.button)`
   background: linear-gradient(to right, #b88af8, #986af8);
   color: white;
   border: none;
-  padding: 0.8rem 2rem;
-  font-size: clamp(1rem, 3vw, 1.2rem);
+  padding: 0.9rem 2.2rem;
+  font-size: clamp(1rem, 3vw, 1.1rem);
   border-radius: 50px;
   cursor: pointer;
   margin-top: 1.2rem;
@@ -190,6 +226,7 @@ const CelebrationButton = styled(motion.button)`
   overflow: hidden;
   z-index: 1;
   min-width: 180px;
+  align-self: center;
   
   &::before {
     content: "";
@@ -218,9 +255,16 @@ const CelebrationButton = styled(motion.button)`
   }
   
   @media (max-width: 768px) {
-    padding: 0.7rem 1.8rem;
+    padding: 0.8rem 2rem;
     margin-top: 1rem;
+    min-width: 170px;
+    font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.7rem 1.8rem;
     min-width: 160px;
+    margin-top: 0.8rem;
   }
 `;
 
@@ -256,7 +300,7 @@ const CelebrationPage = () => {
     document.head.appendChild(fontLink);
 
     // Configurar pétalos con cantidad dinámica según tamaño de pantalla
-    const petalCount = window.innerWidth < 768 ? 10 : 15;
+    const petalCount = window.innerWidth < 768 ? 12 : 18;
     const newPetals = Array.from({ length: petalCount }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -269,7 +313,7 @@ const CelebrationPage = () => {
     // Confetti optimizado para dispositivos móviles
     const confettiTimer = setTimeout(() => {
       setShowConfetti(false);
-    }, window.innerWidth < 768 ? 3000 : 5000);
+    }, window.innerWidth < 768 ? 3500 : 6000);
 
     const handleResize = debounce(() => {
       setWindowSize({
@@ -303,9 +347,10 @@ const CelebrationPage = () => {
           width={windowSize.width}
           height={windowSize.height}
           recycle={false}
-          numberOfPieces={windowSize.width < 768 ? 200 : 300}
-          gravity={windowSize.width < 768 ? 0.2 : 0.15}
+          numberOfPieces={windowSize.width < 768 ? 180 : 280}
+          gravity={windowSize.width < 768 ? 0.25 : 0.12}
           colors={['#8a8aba', '#6a6a9a', '#b8b8d8', '#9a9ac8']}
+          style={{ position: 'fixed' }}
         />
       )}
       
@@ -324,7 +369,8 @@ const CelebrationPage = () => {
         <CelebrationTitle>¡Gracias por aceptar!</CelebrationTitle>
         <CelebrationText>
           Tu presencia hará que mis XV Años sean aún más especiales.
-          <br />
+        </CelebrationText>
+        <CelebrationText>
           Estoy emocionada de compartir este día tan importante contigo.
         </CelebrationText>
         <CelebrationButton 
