@@ -5,18 +5,18 @@ import ReactConfetti from 'react-confetti';
 import { useInView } from 'react-intersection-observer';
 
 // ======================
-// Animaciones mejoradas
+// Animaciones
 // ======================
 const float = keyframes`
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(3deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 `;
 
 const pulse = keyframes`
-  0% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.5); }
-  50% { transform: scale(1.02); box-shadow: 0 0 25px 10px rgba(255, 105, 180, 0.7); }
-  100% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.5); }
+  0% { transform: scale(1); box-shadow: 0 0 10px 5px rgba(65, 105, 225, 0.3); }
+  50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(70, 130, 180, 0.5); }
+  100% { transform: scale(1); box-shadow: 0 0 10px 5px rgba(65, 105, 225, 0.3); }
 `;
 
 const sparkle = keyframes`
@@ -30,15 +30,26 @@ const sparkle = keyframes`
 // ======================
 const Container = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #2b0a3a 0%, #4a1b6a 50%, #2b0a3a 100%);
-  color: white;
-  font-family: 'Playfair Display', 'Montserrat', serif;
+  background: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 50%, #1a1a3a 100%);
+  color: #e6e6fa;
+  font-family: 'Playfair Display', 'Montserrat', sans-serif;
   overflow-x: hidden;
   position: relative;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="rgba(70, 130, 180, 0.05)" d="M30,10 Q50,5 70,10 Q95,20 90,40 Q85,65 50,95 Q15,65 10,40 Q5,20 30,10 Z"/></svg>');
+    opacity: 0.3;
+    z-index: 1;
+  }
 `;
 
 const MainContent = styled.div`
@@ -48,11 +59,24 @@ const MainContent = styled.div`
   text-align: center;
   position: relative;
   z-index: 2;
-  background: rgba(43, 10, 58, 0.85);
+  background: rgba(25, 25, 60, 0.8);
   border-radius: 20px;
-  border: 2px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+  border: 2px solid rgba(70, 130, 180, 0.5);
+  box-shadow: 0 0 30px rgba(65, 105, 225, 0.4);
   backdrop-filter: blur(5px);
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: ${pulse} 8s infinite linear;
+    z-index: -1;
+  }
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;
@@ -61,197 +85,235 @@ const MainContent = styled.div`
 `;
 
 const AnimatedSection = styled.section`
-  margin: 2.5rem 0;
+  margin: 2rem 0;
   padding: 1rem;
   position: relative;
 
   @media (max-width: 768px) {
-    margin: 1.8rem 0;
+    margin: 1.5rem 0;
   }
 `;
 
 const InvitationText = styled(motion.h1)`
   font-size: clamp(2.8rem, 7vw, 4.5rem);
   margin-bottom: 1.5rem;
-  background: linear-gradient(to right, #ffd700, #ff69b4, #ff8a00);
+  background: linear-gradient(to right, #9a9ac8, #6a6a9a, #4a4a7a);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   position: relative;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-  font-style: italic;
-  
-  &::before, &::after {
-    content: '✧';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ffd700;
-    font-size: 2rem;
-    animation: ${sparkle} 2s infinite;
-  }
-  
-  &::before {
-    left: -30px;
-  }
+  text-shadow: 0 0 15px rgba(176, 196, 222, 0.3);
+  font-family: 'Playfair Display', serif;
   
   &::after {
-    right: -30px;
-  }
-
-  @media (max-width: 768px) {
-    &::before, &::after {
-      font-size: 1.5rem;
-    }
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #6a6a9a, #4a4a7a, #6a6a9a);
+    border-radius: 3px;
   }
 `;
 
 const NameText = styled(motion.h2)`
   font-size: clamp(2.2rem, 5.5vw, 3.5rem);
   margin: 2rem 0;
-  color: #fff;
+  color: #e6e6fa;
   font-weight: 600;
   letter-spacing: 1px;
   padding: 1rem 2rem;
   display: inline-block;
-  border: 2px solid #ffd700;
+  border: 2px solid #6a6a9a;
   border-radius: 50px;
-  background: rgba(107, 36, 138, 0.4);
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.3);
-  animation: ${float} 4s ease-in-out infinite;
+  background: rgba(40, 40, 80, 0.7);
+  box-shadow: 0 0 20px rgba(70, 130, 180, 0.3);
+  animation: ${float} 3s ease-in-out infinite;
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, transparent, rgba(176, 196, 222, 0.1), transparent);
+    z-index: -1;
+    animation: ${pulse} 6s infinite linear;
+  }
 `;
 
 const DetailsText = styled(motion.p)`
   font-size: clamp(1.3rem, 3.5vw, 1.8rem);
-  margin: 1.8rem 0;
-  color: #fff;
-  font-weight: 400;
-  background: rgba(74, 27, 106, 0.6);
-  padding: 1.2rem 2.2rem;
+  margin: 1.5rem 0;
+  color: #c9c9e5;
+  font-weight: 500;
+  background: rgba(40, 40, 80, 0.7);
+  padding: 1rem 2rem;
   border-radius: 50px;
   display: inline-block;
-  border: 1px solid #ff69b4;
-  box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+  border: 1px solid #6a6a9a;
+  box-shadow: 0 0 15px rgba(65, 105, 225, 0.2);
   position: relative;
-  z-index: 1;
+  
+  &::after {
+    content: "★";
+    position: absolute;
+    color: rgba(176, 196, 222, 0.5);
+    animation: ${sparkle} 2s infinite ease-in-out;
+  }
+  
+  &:nth-child(odd)::after {
+    top: -5px;
+    right: -5px;
+  }
+  
+  &:nth-child(even)::after {
+    bottom: -5px;
+    left: -5px;
+  }
 `;
 
 const Icon = styled.span`
   margin-right: 0.8rem;
   font-size: 1.5rem;
   display: inline-block;
-  color: #ffd700;
-  animation: ${sparkle} 2s infinite;
+  color: #9a9ac8;
+  text-shadow: 0 0 5px rgba(176, 196, 222, 0.5);
 `;
 
-const Footer = styled.footer`
-  text-align: center;
-  padding: 2rem;
-  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
-  color: #ffd700;
+const AcceptButton = styled(motion.button)`
+  background: linear-gradient(to right, #6a6a9a, #4a4a7a);
+  color: #e6e6fa;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 2rem 0;
+  box-shadow: 0 5px 15px rgba(70, 130, 180, 0.5);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 1px;
   position: relative;
-  z-index: 1;
-`;
-
-const MapContainer = styled(motion.div)`
-  position: relative;
-  margin: 2.5rem auto;
-  max-width: 600px;
-  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
-  border: 2px solid #ffd700;
-  transform-style: preserve-3d;
   z-index: 1;
-
-  iframe {
-    display: block;
-    filter: brightness(110%) contrast(110%) saturate(120%);
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #4a4a7a, #6a6a9a);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
   }
-
-  @media (max-width: 768px) {
-    max-width: 95%;
-    margin: 1.8rem auto;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(70, 130, 180, 0.7);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  &:active {
+    transform: translateY(1px);
   }
 `;
 
-const MapGlow = styled.div`
+const CelebrationMessage = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(25, 25, 60, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  padding: 2rem;
+  text-align: center;
+
+  h2 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #9a9ac8, #6a6a9a, #4a4a7a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 0 0 10px rgba(176, 196, 222, 0.3);
+  }
+
+  p {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: #e6e6fa;
+    max-width: 600px;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: linear-gradient(to right, #6a6a9a, #4a4a7a);
+  color: #e6e6fa;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(70, 130, 180, 0.5);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(to right, #4a4a7a, #6a6a9a);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(70, 130, 180, 0.7);
+  }
+`;
+
+const Sparkle = styled.div`
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  border-radius: 15px;
-  animation: ${pulse} 3s infinite;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: ${sparkle} 2s infinite ease-in-out;
   pointer-events: none;
-  z-index: -1;
 `;
-
-const FloatingCrowns = () => {
-  const crowns = Array(8).fill(0);
-
-  return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
-      {crowns.map((_, i) => {
-        const left = Math.random() * 100;
-        const delay = Math.random() * 3;
-        const duration = 10 + Math.random() * 15;
-        const size = 20 + Math.random() * 30;
-
-        return (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: `${left}%`,
-              top: `${Math.random() * 100}%`,
-              fontSize: `${size}px`,
-              color: '#ffd700',
-              opacity: 0.6,
-            }}
-            animate={{
-              y: [0, -50, 0],
-              rotate: [0, 15, 0],
-              opacity: [0.6, 0.8, 0.6],
-            }}
-            transition={{
-              duration: duration,
-              delay: delay,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          >
-            👑
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
 
 // ======================
 // Componente principal
 // ======================
 const App = () => {
   const [showConfetti, setShowConfetti] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [sparkles, setSparkles] = useState([]);
 
   useEffect(() => {
-    // Importar fuentes de Google Fonts
     const link1 = document.createElement('link');
-    link1.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap';
+    link1.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap';
     link1.rel = 'stylesheet';
     
     const link2 = document.createElement('link');
-    link2.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap';
+    link2.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap';
     link2.rel = 'stylesheet';
     
     document.head.appendChild(link1);
@@ -264,45 +326,95 @@ const App = () => {
       });
     };
 
+    const handleMouseMove = (e) => {
+      if (Math.random() > 0.9) {
+        setSparkles(prev => [
+          ...prev.slice(-10),
+          {
+            id: Date.now(),
+            x: e.clientX,
+            y: e.clientY,
+          }
+        ]);
+      }
+    };
+
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowConfetti(false);
-    }, 8000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
   const [ref1, inView1] = useInView({ threshold: 0.1 });
   const [ref2, inView2] = useInView({ threshold: 0.1 });
   const [ref3, inView3] = useInView({ threshold: 0.1 });
-  const [ref4, inView4] = useInView({ threshold: 0.1 });
+
+  const handleAccept = () => {
+    setShowMessage(true);
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 5000);
+  };
+
+  const closeMessage = () => {
+    setShowMessage(false);
+  };
 
   return (
     <Container>
-      <FloatingCrowns />
-      
       <AnimatePresence>
         {showConfetti && (
           <ReactConfetti
             width={windowSize.width}
             height={windowSize.height}
             recycle={false}
-            numberOfPieces={400}
+            numberOfPieces={300}
             gravity={0.15}
-            colors={['#ffd700', '#ff69b4', '#ffffff', '#ff8a00']}
+            colors={['#6a6a9a', '#4a4a7a', '#9a9ac8', '#7a7aa8']}
           />
         )}
       </AnimatePresence>
+
+      {sparkles.map(sparkle => (
+        <Sparkle 
+          key={sparkle.id}
+          style={{
+            left: `${sparkle.x}px`,
+            top: `${sparkle.y}px`,
+            animationDelay: `${Math.random() * 2}s`
+          }}
+        />
+      ))}
+
+      {showMessage && (
+        <CelebrationMessage
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <h2>¡Gracias por aceptar!</h2>
+          <p>Tu presencia hará que mis XV Años sean aún más especiales. Estoy emocionada de compartir este día tan importante contigo.</p>
+          <CloseButton onClick={closeMessage}>Cerrar</CloseButton>
+        </CelebrationMessage>
+      )}
 
       <MainContent>
         <AnimatedSection ref={ref1}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: inView1 ? 1 : 0.8, y: inView1 ? 0 : 30 }}
-            transition={{ duration: 1, type: 'spring' }}
+            transition={{ duration: 0.8 }}
           >
             <InvitationText>¡Te invito a mis XV!</InvitationText>
           </motion.div>
@@ -312,7 +424,7 @@ const App = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: inView2 ? 1 : 0.8, scale: inView2 ? 1 : 0.95 }}
-            transition={{ duration: 0.8, delay: 0.3, type: 'spring' }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <NameText>Estrella Jiménez Martínez</NameText>
           </motion.div>
@@ -320,77 +432,30 @@ const App = () => {
 
         <AnimatedSection ref={ref3}>
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: inView3 ? 1 : 0.8, x: inView3 ? 0 : -20 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            <DetailsText>
-              <Icon>📍</Icon> 52055 Pueblo Nuevo Tlalmimilolpan, Méx.
-            </DetailsText>
-            
-            <MapContainer 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: inView3 ? 1 : 0.8, scale: inView3 ? 1 : 0.97 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.112245593614!2d-99.4767877!3d19.5101583!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d20d9e9e9e9e9e%3A0x9e9e9e9e9e9e9e9e!2s52055%20Pueblo%20Nuevo%20Tlalmimilolpan!5e0!3m2!1sen!2smx!4v1620000000000!5m2!1sen!2smx"
-                width="100%"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                title="Ubicación de la fiesta de XV Años"
-              ></iframe>
-              <MapGlow />
-            </MapContainer>
-          </motion.div>
-        </AnimatedSection>
-
-        <AnimatedSection ref={ref4}>
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: inView4 ? 1 : 0.8, x: inView4 ? 0 : 20 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
           >
             <DetailsText>
               <Icon>⏰</Icon> Sábado 19 de Julio de 2025 a las 14:00 hrs
             </DetailsText>
+            <DetailsText>
+              <Icon>📍</Icon> Salón de Eventos "Las Estrellas", Av. Principal #123
+            </DetailsText>
+            <DetailsText>
+              <Icon>👗</Icon> Código de vestimenta: Formal elegante
+            </DetailsText>
           </motion.div>
         </AnimatedSection>
-      </MainContent>
 
-      <Footer>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+        <AcceptButton
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleAccept}
         >
-          <motion.p
-            animate={{
-              scale: [1, 1.05, 1],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: 'italic',
-              fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
-              background: 'linear-gradient(to right, #ffd700, #ff69b4)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              display: 'inline-block',
-              padding: '0 20px',
-            }}
-          >
-            ¡Espero contar con tu presencia!
-          </motion.p>
-        </motion.div>
-      </Footer>
+          Aceptar Invitación
+        </AcceptButton>
+      </MainContent>
     </Container>
   );
 };
