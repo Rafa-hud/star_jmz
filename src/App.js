@@ -58,6 +58,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 const MainContent = styled.div`
@@ -74,11 +75,19 @@ const MainContent = styled.div`
   box-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
   backdrop-filter: blur(6px);
   ${css`animation: ${curtainOpen} 1s ease-out forwards;`}
+  box-sizing: border-box;
 
   @media (max-width: 480px) {
     padding: 1.5rem 1rem;
     width: 95%;
+    max-width: 95%;
     border-radius: 12px;
+    margin: 0.5rem auto;
+  }
+
+  @media (max-width: 360px) {
+    padding: 1.2rem 0.8rem;
+    width: 98%;
   }
 `;
 
@@ -88,6 +97,10 @@ const AnimatedSection = styled.section`
 
   @media (max-width: 480px) {
     margin: 1rem 0;
+  }
+
+  @media (max-width: 360px) {
+    margin: 0.8rem 0;
   }
 `;
 
@@ -100,9 +113,15 @@ const InvitationText = styled(motion.h1)`
   font-family: 'Marcellus', serif;
   line-height: 1.2;
   ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  word-wrap: break-word;
   
   @media (max-width: 480px) {
     font-size: clamp(1.8rem, 7vw, 2.5rem);
+    margin-bottom: 0.8rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
   }
 `;
 
@@ -121,10 +140,17 @@ const NameText = styled(motion.h2)`
       ${float} 3s ease-in-out infinite,
       ${textGlow} 3s infinite ease-in-out;
   `}
+  word-wrap: break-word;
   
   @media (max-width: 480px) {
     font-size: clamp(1.4rem, 6vw, 2rem);
     padding: 0.6rem 1rem;
+    margin: 0.8rem 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: clamp(1.3rem, 6vw, 1.8rem);
+    padding: 0.5rem 0.8rem;
   }
 `;
 
@@ -136,9 +162,17 @@ const DetailsText = styled(motion.p)`
   padding: 0.6rem 1rem;
   line-height: 1.5;
   ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  word-wrap: break-word;
   
   @media (max-width: 480px) {
     font-size: clamp(0.95rem, 4vw, 1.1rem);
+    padding: 0.5rem 0.8rem;
+    margin: 0.6rem 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    padding: 0.4rem 0.6rem;
   }
 `;
 
@@ -146,6 +180,10 @@ const Icon = styled.span`
   margin-right: 0.5rem;
   display: inline-block;
   ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
+
+  @media (max-width: 480px) {
+    margin-right: 0.3rem;
+  }
 `;
 
 const AcceptButton = styled(motion.button)`
@@ -162,6 +200,7 @@ const AcceptButton = styled(motion.button)`
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
   ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  min-width: 200px;
   
   &:hover {
     background: rgba(70, 130, 180, 0.2);
@@ -171,6 +210,14 @@ const AcceptButton = styled(motion.button)`
   @media (max-width: 480px) {
     padding: 0.7rem 1.5rem;
     font-size: 1rem;
+    margin: 1rem 0;
+    min-width: 180px;
+  }
+
+  @media (max-width: 360px) {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    min-width: 160px;
   }
 `;
 
@@ -182,6 +229,11 @@ const Sparkle = styled.div`
   border-radius: 50%;
   ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
   pointer-events: none;
+
+  @media (max-width: 480px) {
+    width: 3px;
+    height: 3px;
+  }
 `;
 
 // Componente de Página de Celebración
@@ -196,7 +248,6 @@ const CelebrationPage = () => {
 
   // Observadores de intersección
   const [ref1, inView1] = useInView({ threshold: 0.1 });
-  const [ref2, inView2] = useInView({ threshold: 0.1 });
   const [ref3, inView3] = useInView({ threshold: 0.1 });
 
   useEffect(() => {
@@ -276,7 +327,7 @@ const CelebrationPage = () => {
         />
       ))}
 
-      {/* Contenido principal - ahora con la misma estructura que la invitación */}
+      {/* Contenido principal */}
       <MainContent>
         <AnimatedSection ref={ref1}>
           <motion.div
@@ -287,8 +338,6 @@ const CelebrationPage = () => {
             <InvitationText>¡Gracias por aceptar!</InvitationText>
           </motion.div>
         </AnimatedSection>
-
-        
 
         <AnimatedSection ref={ref3}>
           <motion.div
