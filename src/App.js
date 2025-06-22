@@ -298,6 +298,58 @@ const AcceptButton = styled(motion.button)`
   }
 `;
 
+const MessageContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 90%;
+  padding: 2rem;
+  background: rgba(30, 30, 70, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(110, 130, 200, 0.3);
+  z-index: 2;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+`;
+
+const CelebrationTitle = styled.h2`
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to right, #d8b8f8, #b88af8, #986af8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 0 2px 10px rgba(180, 160, 220, 0.3);
+  line-height: 1.3;
+  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
+`;
+
+const CelebrationText = styled.p`
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+  color: #f0e6ff;
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  
+  @media (max-width: 768px) {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
+`;
+
 const CelebrationMessage = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -347,27 +399,47 @@ const CelebrationMessage = styled(motion.div)`
   }
 `;
 
-const CloseButton = styled.button`
-  background: linear-gradient(to right, #8a8aba, #6a6a9a);
-  color: #e6e6fa;
+const CloseButton = styled(motion.button)`
+  background: linear-gradient(to right, #b88af8, #986af8);
+  color: white;
   border: none;
-  padding: 0.8rem 1.8rem;
-  font-size: 1.1rem;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.2rem;
   border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(70, 130, 180, 0.5);
+  box-shadow: 0 5px 15px rgba(152, 106, 248, 0.4);
   transition: all 0.3s ease;
-  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #986af8, #b88af8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
   
   &:hover {
-    background: linear-gradient(to right, #6a6a9a, #8a8aba);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(70, 130, 180, 0.7);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(152, 106, 248, 0.6);
+    
+    &::before {
+      opacity: 1;
+    }
   }
   
   @media (max-width: 768px) {
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.7rem 2rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -578,27 +650,54 @@ const App = () => {
       ))}
 
       {/* Mensaje de celebración con efecto de pétalos */}
-      {showMessage && (
-        <CelebrationMessage
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+{showMessage && (
+  <CelebrationMessage
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    {petals.map(petal => (
+      <Petal
+        key={petal.id}
+        left={petal.left}
+        delay={petal.delay}
+        duration={petal.duration}
+      >
+        {petal.emoji}
+      </Petal>
+    ))}
+    
+    <MessageContent>
+      <motion.div
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <CelebrationTitle>¡Gracias por aceptar!</CelebrationTitle>
+        <CelebrationText>
+          Tu presencia hará que mis XV Años sean aún más especiales. 
+          <br />
+          Estoy emocionada de compartir este día tan importante contigo.
+        </CelebrationText>
+      </motion.div>
+      
+      <motion.div
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <CloseButton 
+          onClick={closeMessage}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {petals.map(petal => (
-            <Petal
-              key={petal.id}
-              left={petal.left}
-              delay={petal.delay}
-              duration={petal.duration}
-            >
-              {petal.emoji}
-            </Petal>
-          ))}
-          <h2>¡Gracias por aceptar!</h2>
-          <p>Tu presencia hará que mis XV Años sean aún más especiales. Estoy emocionada de compartir este día tan importante contigo.</p>
-          <CloseButton onClick={closeMessage}>Cerrar</CloseButton>
-        </CelebrationMessage>
-      )}
+          Cerrar
+        </CloseButton>
+      </motion.div>
+    </MessageContent>
+  </CelebrationMessage>
+)}
 
       {/* Contenido principal */}
       <MainContent>
