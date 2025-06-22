@@ -45,6 +45,179 @@ const petalFall = keyframes`
 // ======================
 // Componentes estilizados
 // ======================
+
+const CelebrationMessage = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 40, 0.98);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+
+  /* Efecto de fondo similar al Container */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="rgba(110, 130, 200, 0.05)" d="M30,10 Q50,5 70,10 Q95,20 90,40 Q85,65 50,95 Q15,65 10,40 Q5,20 30,10 Z"/></svg>'),
+      radial-gradient(circle at 20% 30%, rgba(110, 130, 200, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(110, 130, 200, 0.1) 0%, transparent 50%);
+    opacity: 0.3;
+    z-index: 1;
+  }
+`;
+
+const MessageContent = styled.div`
+  padding: 3rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  background: rgba(25, 25, 60, 0.9);
+  border-radius: 20px;
+  border: 2px solid rgba(110, 130, 200, 0.5);
+  box-shadow: 0 0 30px rgba(85, 105, 225, 0.4);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  ${css`animation: ${curtainOpen} 1.5s ease-out forwards;`}
+
+  /* Efecto de pulso similar al MainContent */
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    ${css`animation: ${pulse} 8s infinite linear;`}
+    z-index: -1;
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+    margin: 0 1rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+  }
+`;
+
+const CelebrationTitle = styled.h2`
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to right, #d8b8f8, #b88af8, #986af8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: 1px;
+  position: relative;
+  text-shadow: 0 0 15px rgba(180, 160, 220, 0.3);
+  font-family: 'Playfair Display', serif;
+  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  
+  /* Línea decorativa similar a InvitationText */
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #b88af8, #986af8, #b88af8);
+    border-radius: 3px;
+    
+    @media (max-width: 768px) {
+      width: 80px;
+      bottom: -8px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-bottom: 1rem;
+  }
+`;
+
+const CelebrationText = styled.p`
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+  color: #f0e6ff;
+  max-width: 600px;
+  margin: 1.5rem auto;
+  line-height: 1.6;
+  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
+  
+  @media (max-width: 768px) {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    margin: 1.2rem auto;
+  }
+`;
+
+const CelebrationButton = styled(motion.button)`
+  background: linear-gradient(to right, #b88af8, #986af8);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  box-shadow: 0 5px 15px rgba(152, 106, 248, 0.4);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #986af8, #b88af8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(152, 106, 248, 0.6);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+    margin-top: 1.2rem;
+  }
+`;
+
 const Container = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 50%, #1a1a3a 100%);
@@ -298,150 +471,8 @@ const AcceptButton = styled(motion.button)`
   }
 `;
 
-const MessageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  max-width: 90%;
-  padding: 2rem;
-  background: rgba(30, 30, 70, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(110, 130, 200, 0.3);
-  z-index: 2;
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-    max-width: 95%;
-  }
-`;
 
-const CelebrationTitle = styled.h2`
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  margin-bottom: 1.5rem;
-  background: linear-gradient(to right, #d8b8f8, #b88af8, #986af8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: 'Playfair Display', serif;
-  text-shadow: 0 2px 10px rgba(180, 160, 220, 0.3);
-  line-height: 1.3;
-  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-  
-  @media (max-width: 768px) {
-    margin-bottom: 1rem;
-  }
-`;
 
-const CelebrationText = styled.p`
-  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
-  color: #f0e6ff;
-  max-width: 600px;
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
-  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-  
-  @media (max-width: 768px) {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
-  }
-`;
-
-const CelebrationMessage = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 15, 40, 0.98);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  padding: 2rem;
-  text-align: center;
-  backdrop-filter: blur(5px);
-  overflow: hidden;
-
-  h2 {
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    margin-bottom: 1.5rem;
-    background: linear-gradient(to right, #b8b8d8, #8a8aba, #6a6a9a);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-family: 'Playfair Display', serif;
-    text-shadow: 0 0 10px rgba(176, 196, 222, 0.3);
-    ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-    
-    @media (max-width: 768px) {
-      margin-bottom: 1rem;
-    }
-  }
-
-  p {
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
-    color: #e6e6fa;
-    max-width: 600px;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-    ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-    
-    @media (max-width: 768px) {
-      font-size: clamp(1rem, 4vw, 1.5rem);
-      margin-bottom: 1.5rem;
-      padding: 0 1rem;
-    }
-  }
-`;
-
-const CloseButton = styled(motion.button)`
-  background: linear-gradient(to right, #b88af8, #986af8);
-  color: white;
-  border: none;
-  padding: 0.8rem 2.5rem;
-  font-size: 1.2rem;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(152, 106, 248, 0.4);
-  transition: all 0.3s ease;
-  font-weight: 600;
-  letter-spacing: 1px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, #986af8, #b88af8);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-  }
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(152, 106, 248, 0.6);
-    
-    &::before {
-      opacity: 1;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0.7rem 2rem;
-    font-size: 1.1rem;
-  }
-`;
 
 const Sparkle = styled.div`
   position: absolute;
@@ -650,12 +681,12 @@ const App = () => {
       ))}
 
       {/* Mensaje de celebración con efecto de pétalos */}
+      // Implementación del mensaje en el componente
 {showMessage && (
   <CelebrationMessage
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
   >
     {petals.map(petal => (
       <Petal
@@ -669,32 +700,19 @@ const App = () => {
     ))}
     
     <MessageContent>
-      <motion.div
-        initial={{ y: -20 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.3 }}
+      <CelebrationTitle>¡Gracias por aceptar!</CelebrationTitle>
+      <CelebrationText>
+        Tu presencia hará que mis XV Años sean aún más especiales.
+        <br />
+        Estoy emocionada de compartir este día tan importante contigo.
+      </CelebrationText>
+      <CelebrationButton 
+        onClick={closeMessage}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
-        <CelebrationTitle>¡Gracias por aceptar!</CelebrationTitle>
-        <CelebrationText>
-          Tu presencia hará que mis XV Años sean aún más especiales. 
-          <br />
-          Estoy emocionada de compartir este día tan importante contigo.
-        </CelebrationText>
-      </motion.div>
-      
-      <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        <CloseButton 
-          onClick={closeMessage}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Cerrar
-        </CloseButton>
-      </motion.div>
+        Cerrar
+      </CelebrationButton>
     </MessageContent>
   </CelebrationMessage>
 )}
