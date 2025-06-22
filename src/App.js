@@ -513,7 +513,7 @@ const CelebrationButton = styled(motion.button)`
 `;
 
 // ======================
-// Componente de Página de Celebración
+// Componente de Página de Celebración (Versión Elegante)
 // ======================
 const CelebrationPage = () => {
   const [showConfetti, setShowConfetti] = useState(true);
@@ -525,39 +525,65 @@ const CelebrationPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Configurar pétalos
-    const newPetals = Array.from({ length: 15 }, (_, i) => ({
+    // Cargar fuente elegante
+    const fontLink = document.createElement('link');
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&display=swap';
+    fontLink.rel = 'stylesheet';
+    document.head.appendChild(fontLink);
+
+    // Configurar pétalos (menos cantidad en móviles)
+    const petalCount = window.innerWidth < 768 ? 8 : 12;
+    const newPetals = Array.from({ length: petalCount }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      delay: Math.random() * 5,
-      duration: 5 + Math.random() * 10,
-      emoji: ['🌸', '🌹', '🌺', '🌻', '🌼'][Math.floor(Math.random() * 5)]
+      delay: Math.random() * 3,
+      duration: 4 + Math.random() * 8,
+      emoji: ['🌸', '🌹', '🌺', '🌻', '🌼'][Math.floor(Math.random() * 5)],
+      size: `${0.5 + Math.random() * 0.7}rem`
     }));
     setPetals(newPetals);
 
-    // Confetti inicial
+    // Confetti inicial (menos cantidad y tiempo más corto en móviles)
+    const confettiTime = window.innerWidth < 768 ? 2500 : 4000;
+    const confettiPieces = window.innerWidth < 768 ? 120 : 200;
+    
     const timer = setTimeout(() => {
       setShowConfetti(false);
-    }, 5000);
+    }, confettiTime);
 
-    // Manejar redimensionamiento
-    const handleResize = () => {
+    // Manejar redimensionamiento con debounce
+    const handleResize = debounce(() => {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
       });
-    };
+      
+      // Recalcular pétalos al cambiar tamaño
+      const newPetalCount = window.innerWidth < 768 ? 8 : 12;
+      if (petals.length !== newPetalCount) {
+        const updatedPetals = Array.from({ length: newPetalCount }, (_, i) => ({
+          id: i,
+          left: Math.random() * 100,
+          delay: Math.random() * 3,
+          duration: 4 + Math.random() * 8,
+          emoji: ['🌸', '🌹', '🌺', '🌻', '🌼'][Math.floor(Math.random() * 5)],
+          size: `${0.5 + Math.random() * 0.7}rem`
+        }));
+        setPetals(updatedPetals);
+      }
+    }, 150);
 
     window.addEventListener('resize', handleResize);
     
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
+      document.head.removeChild(fontLink);
     };
   }, []);
 
   const closeMessage = () => {
-    navigate('/'); // Redirigir a la página principal
+    navigate('/', { state: { fromCelebration: true } });
   };
 
   return (
@@ -565,15 +591,23 @@ const CelebrationPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
     >
       {showConfetti && (
         <ReactConfetti
           width={windowSize.width}
           height={windowSize.height}
           recycle={false}
-          numberOfPieces={300}
-          gravity={0.15}
-          colors={['#8a8aba', '#6a6a9a', '#b8b8d8', '#9a9ac8']}
+          numberOfPieces={window.innerWidth < 768 ? 120 : 200}
+          gravity={window.innerWidth < 768 ? 0.2 : 0.1}
+          colors={['#b8a8d8', '#9888c8', '#d8c8f8', '#a898e8']}
+          style={{ zIndex: 0 }}
+          confettiSource={{
+            x: windowSize.width / 2,
+            y: 0,
+            w: 10,
+            h: 0
+          }}
         />
       )}
       
@@ -583,6 +617,7 @@ const CelebrationPage = () => {
           left={petal.left}
           delay={petal.delay}
           duration={petal.duration}
+          style={{ fontSize: petal.size }}
         >
           {petal.emoji}
         </Petal>
@@ -592,20 +627,38 @@ const CelebrationPage = () => {
         <CelebrationTitle>¡Gracias por aceptar!</CelebrationTitle>
         <CelebrationText>
           Tu presencia hará que mis XV Años sean aún más especiales.
-          <br />
+        </CelebrationText>
+        <CelebrationText>
           Estoy emocionada de compartir este día tan importante contigo.
         </CelebrationText>
         <CelebrationButton 
           onClick={closeMessage}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ 
+            scale: 1.03,
+            boxShadow: "0 3px 10px rgba(168, 136, 248, 0.4)"
+          }}
+          whileTap={{ 
+            scale: 0.97,
+            boxShadow: "0 1px 5px rgba(168, 136, 248, 0.3)"
+          }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
         >
-          Volver
+          Volver al Inicio
         </CelebrationButton>
       </MessageContent>
     </CelebrationMessage>
   );
 };
+
+// Función debounce para optimización
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    const context = this, args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
 
 // ======================
 // Componente de Página Principal
