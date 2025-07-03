@@ -495,7 +495,7 @@ const MainPage = () => {
             transition={{ duration: 0.6 }}
           >
             <DetailsText>
-              <Icon>⏰</Icon> Sábado 19 de Julio de 2025 a las 14:00 hrs
+              <Icon>⏰</Icon> Sábado 19 de Julio de 2025 a las 15:00 hrs
             </DetailsText>
             <DetailsText>
               <Icon>📍</Icon> Pueblo Nuevo Tlamimilolpan
