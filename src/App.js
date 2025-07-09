@@ -364,16 +364,28 @@ const InvitationPresentation = () => {
       )
     },
     {
-      content: (
-        <>
-          <Title>Un Mensaje Especial</Title>
-          <Text>
-            "He aprendido que estar con quienes amo es suficiente para ser feliz. Por eso deseo compartir contigo este momento que solo se vive una vez"
-          </Text>
-          <Subtitle>- Con cariño, Estrella</Subtitle>
-        </>
-      )
-    },
+  content: (
+    <>
+      <Title>Un Mensaje Especial</Title>
+      <Text style={{ 
+        fontStyle: 'italic',
+        margin: '1.5rem auto',
+        padding: '0 10px',
+        maxWidth: '90%',
+        lineHeight: '1.7'
+      }}>
+        "He aprendido que estar con quienes amo es suficiente para ser feliz. Por eso deseo compartir contigo este momento que solo se vive una vez"
+      </Text>
+      <Subtitle style={{ 
+        marginTop: '1.5rem',
+        fontWeight: '600',
+        color: '#e6e6fa'
+      }}>
+        - Con cariño, Estrella
+      </Subtitle>
+    </>
+  )
+},
     {
       content: (
         <>
