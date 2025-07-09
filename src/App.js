@@ -454,53 +454,18 @@ const InvitationPresentation = () => {
           </motion.div>
         </AnimatePresence>
 
-        <AnimatedSection ref={ref2}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: inView2 ? 1 : 0.8, scale: inView2 ? 1 : 0.98 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <NameText>Estrella Jiménez Martínez</NameText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AnimatedSection ref={ref3}>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: inView3 ? 1 : 0.8, x: inView3 ? 0 : -10 }}
-            transition={{ duration: 0.6 }}
-          >
-            <DetailsText>
-              <Icon>⏰</Icon> Sábado 19 de Julio de 2025 a las 14:00 hrs
-            </DetailsText>
-            <DetailsText>
-              <Icon>📍</Icon> Pueblo Nuevo Tlamimilolpan
-            </DetailsText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AcceptButton
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={handleAccept}
-        >
-          Aceptar Invitación
-        </AcceptButton>
-      </MainContent>
+        <ProgressDots>
+          {slides.map((_, index) => (
+            <Dot 
+              key={index} 
+              active={index === currentSlide}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
+        </ProgressDots>
+      </SlideContainer>
     </Container>
   );
 };
 
-// Componente App principal
-const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/celebration" element={<CelebrationPage />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
+export default InvitationPresentation;
