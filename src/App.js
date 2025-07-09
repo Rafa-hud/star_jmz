@@ -3,9 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes, css } from 'styled-components';
 import ReactConfetti from 'react-confetti';
 
-// ======================
 // Animaciones
-// ======================
 const float = keyframes`
   0% { transform: translateY(0px); }
   50% { transform: translateY(-8px); }
@@ -30,9 +28,7 @@ const sparkle = keyframes`
   100% { opacity: 0.3; transform: scale(0.8); }
 `;
 
-// ======================
 // Componentes estilizados
-// ======================
 const Container = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
@@ -43,9 +39,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Cambiado a flex-start */
   box-sizing: border-box;
-  padding: 0 10px;
+  padding: 0 15px; /* Aumentado el padding lateral */
 `;
 
 const SlideContainer = styled.div`
@@ -55,9 +51,9 @@ const SlideContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start; /* Cambiado de center a flex-start */
+  align-items: flex-start;
   position: relative;
-  padding: 15px;
+  padding: 15px 10px; /* Reducido padding horizontal */
   box-sizing: border-box;
   text-align: center;
   z-index: 2;
@@ -70,9 +66,9 @@ const ContentBox = styled(motion.div)`
   box-shadow: 0 0 30px rgba(65, 105, 225, 0.4);
   backdrop-filter: blur(8px);
   padding: 1.5rem;
-  width: 100%;
+  width: calc(100% - 20px); /* Ajuste para márgenes */
   max-width: 500px;
-  margin: 0 0 0 20px; /* Cambiado el margen para alinear a la izquierda */
+  margin: 0; /* Eliminado margen izquierdo */
   position: relative;
   overflow: hidden;
   display: flex;
@@ -90,16 +86,19 @@ const ContentBox = styled(motion.div)`
     z-index: -1;
   }
   
+  @media (max-width: 768px) {
+    width: calc(100% - 30px);
+    padding: 1.3rem;
+  }
+
   @media (max-width: 480px) {
-    padding: 1.2rem;
-    max-width: 95%;
-    margin: 0 0 0 10px; /* Ajuste para móviles */
+    width: calc(100% - 20px);
+    padding: 1.1rem;
   }
 
   @media (max-width: 360px) {
+    width: calc(100% - 10px);
     padding: 1rem;
-    max-width: 98%;
-    margin: 0 0 0 5px; /* Ajuste para móviles pequeños */
   }
 `;
 
@@ -129,13 +128,13 @@ const Title = styled.h1`
   }
 
   @media (max-width: 480px) {
-    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
     margin-bottom: 0.8rem;
   }
 `;
 
 const Subtitle = styled.h2`
-  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
   color: #b8a8d8;
   font-weight: 500;
   margin: 0.8rem auto;
@@ -146,24 +145,23 @@ const Subtitle = styled.h2`
   text-align: center;
 
   @media (max-width: 480px) {
-    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
   }
 `;
 
 const Text = styled.p`
-  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  font-size: clamp(1rem, 3.8vw, 1.1rem);
   color: #e6e6fa;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 1rem auto;
   letter-spacing: 0.3px;
-  max-width: 90%;
+  max-width: 95%;
   padding: 0 10px;
   text-align: center;
 
   @media (max-width: 480px) {
-    font-size: clamp(0.95rem, 4vw, 1.1rem);
-    line-height: 1.6;
-    max-width: 95%;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    line-height: 1.5;
   }
 `;
 
@@ -209,7 +207,7 @@ const Button = styled(motion.button)`
   background: linear-gradient(135deg, rgba(100, 149, 237, 0.3) 0%, rgba(138, 43, 226, 0.3) 100%);
   color: #e6e6fa;
   border: 1px solid #8a8aba;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1.8rem;
   font-size: clamp(1rem, 4vw, 1.1rem);
   border-radius: 50px;
   cursor: pointer;
@@ -253,7 +251,7 @@ const Button = styled(motion.button)`
   }
 
   @media (max-width: 480px) {
-    padding: 0.7rem 1.8rem;
+    padding: 0.7rem 1.5rem;
     margin-top: 1.2rem;
   }
 `;
@@ -262,23 +260,23 @@ const ProgressDots = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 25px;
+  bottom: 20px;
   width: 100%;
   z-index: 3;
   padding: 0 15px;
   box-sizing: border-box;
 
   @media (max-width: 480px) {
-    bottom: 20px;
+    bottom: 15px;
   }
 `;
 
 const Dot = styled.div`
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: ${props => props.active ? '#9c88ff' : 'rgba(156, 136, 255, 0.3)'};
-  margin: 0 6px;
+  margin: 0 5px;
   transition: all 0.3s ease;
   cursor: pointer;
   box-shadow: ${props => props.active ? '0 0 8px #9c88ff' : 'none'};
@@ -288,16 +286,16 @@ const Dot = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 8px;
-    height: 8px;
-    margin: 0 5px;
+    width: 7px;
+    height: 7px;
+    margin: 0 4px;
   }
 `;
 
 const Rose = styled.div`
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%239c88ff" d="M50 20c-5 0-10 3-10 8 0 5 5 8 10 8s10-3 10-8c0-5-5-8-10-8zm0 15c-10 0-20 5-20 15 0 10 10 15 20 15s20-5 20-15c0-10-10-15-20-15z"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;
@@ -307,15 +305,15 @@ const Rose = styled.div`
   filter: drop-shadow(0 0 5px rgba(156, 136, 255, 0.7));
 
   @media (max-width: 480px) {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
   }
 `;
 
 const SparkleEffect = styled.div`
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background: white;
   border-radius: 50%;
   ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
@@ -323,12 +321,12 @@ const SparkleEffect = styled.div`
   filter: blur(0.5px);
 
   @media (max-width: 480px) {
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
   }
 `;
 
-// Componente de presentación automática
+// Componente principal
 const InvitationPresentation = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -339,7 +337,6 @@ const InvitationPresentation = () => {
   const [roses, setRoses] = useState([]);
   const [sparkles, setSparkles] = useState([]);
 
-  // Slides basados en las imágenes compartidas
   const slides = [
     {
       content: (
@@ -407,7 +404,6 @@ const InvitationPresentation = () => {
     }
   ];
 
-  // Crear rosas flotantes
   useEffect(() => {
     const newRoses = [];
     const roseCount = window.innerWidth < 480 ? 5 : 8;
@@ -424,7 +420,6 @@ const InvitationPresentation = () => {
     setRoses(newRoses);
   }, []);
 
-  // Crear efectos de destello
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (Math.random() > 0.9) {
@@ -446,7 +441,6 @@ const InvitationPresentation = () => {
   }, []);
 
   useEffect(() => {
-    // Cambio automático de slides
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 7000);
@@ -482,7 +476,6 @@ const InvitationPresentation = () => {
         )}
       </AnimatePresence>
 
-      {/* Rosas flotantes */}
       {roses.map(rose => (
         <Rose
           key={rose.id}
@@ -497,7 +490,6 @@ const InvitationPresentation = () => {
         />
       ))}
 
-      {/* Efectos de destello */}
       {sparkles.map(sparkle => (
         <SparkleEffect
           key={sparkle.id}
