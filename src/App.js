@@ -45,17 +45,19 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  padding: 0 10px;
 `;
 
 const SlideContainer = styled.div`
   width: 100%;
+  max-width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 20px;
+  padding: 15px;
   box-sizing: border-box;
   text-align: center;
   z-index: 2;
@@ -67,9 +69,9 @@ const ContentBox = styled(motion.div)`
   border: 1px solid rgba(100, 149, 237, 0.3);
   box-shadow: 0 0 30px rgba(65, 105, 225, 0.4);
   backdrop-filter: blur(8px);
-  padding: 2.5rem;
-  max-width: 650px;
-  width: 90%;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
@@ -86,49 +88,74 @@ const ContentBox = styled(motion.div)`
   }
   
   @media (max-width: 480px) {
-    padding: 1.8rem;
-    width: 95%;
+    padding: 1.2rem;
+    max-width: 95%;
+  }
+
+  @media (max-width: 360px) {
+    padding: 1rem;
+    max-width: 98%;
   }
 `;
 
 const Title = styled.h1`
-  font-size: clamp(2.2rem, 7vw, 3.5rem);
+  font-size: clamp(1.8rem, 7vw, 2.8rem);
   color: #e6e6fa;
   font-weight: 600;
   font-family: 'Marcellus SC', serif;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1rem;
   letter-spacing: 1px;
   ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
   position: relative;
   display: inline-block;
+  max-width: 100%;
+  padding: 0 10px;
   
   &::after {
     content: "";
     position: absolute;
-    bottom: -10px;
+    bottom: -8px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
+    width: 80px;
     height: 2px;
     background: linear-gradient(90deg, transparent, #8a8aba, transparent);
+  }
+
+  @media (max-width: 480px) {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    margin-bottom: 0.8rem;
   }
 `;
 
 const Subtitle = styled.h2`
-  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  font-size: clamp(1.4rem, 5vw, 2rem);
   color: #b8a8d8;
   font-weight: 500;
-  margin: 1.2rem 0;
+  margin: 0.8rem auto;
   font-style: italic;
   ${css`animation: ${float} 4s infinite ease-in-out;`}
+  max-width: 100%;
+  padding: 0 10px;
+
+  @media (max-width: 480px) {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+  }
 `;
 
 const Text = styled.p`
-  font-size: clamp(1.1rem, 3.8vw, 1.3rem);
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
   color: #e6e6fa;
-  line-height: 1.7;
-  margin: 1.2rem 0;
-  letter-spacing: 0.5px;
+  line-height: 1.6;
+  margin: 1rem auto;
+  letter-spacing: 0.3px;
+  max-width: 100%;
+  padding: 0 15px;
+
+  @media (max-width: 480px) {
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    line-height: 1.5;
+  }
 `;
 
 const HighlightText = styled.span`
@@ -138,26 +165,32 @@ const HighlightText = styled.span`
 `;
 
 const EventDetail = styled.div`
-  margin: 2rem 0;
-  padding: 1.5rem;
+  margin: 1.5rem auto;
+  padding: 1rem;
   border-top: 1px solid rgba(138, 138, 186, 0.4);
   border-bottom: 1px solid rgba(138, 138, 186, 0.4);
   position: relative;
+  max-width: 90%;
   
   &::before, &::after {
     content: "✧";
     position: absolute;
     color: #8a8aba;
-    font-size: 1.2rem;
-    top: -10px;
+    font-size: 1rem;
+    top: -8px;
   }
   
   &::before {
-    left: 10px;
+    left: 5px;
   }
   
   &::after {
-    right: 10px;
+    right: 5px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.8rem;
+    margin: 1.2rem auto;
   }
 `;
 
@@ -165,18 +198,21 @@ const Button = styled(motion.button)`
   background: linear-gradient(135deg, rgba(100, 149, 237, 0.3) 0%, rgba(138, 43, 226, 0.3) 100%);
   color: #e6e6fa;
   border: 1px solid #8a8aba;
-  padding: 1rem 2.5rem;
-  font-size: 1.2rem;
+  padding: 0.8rem 2rem;
+  font-size: clamp(1rem, 4vw, 1.1rem);
   border-radius: 50px;
   cursor: pointer;
-  margin-top: 2.5rem;
+  margin: 1.5rem auto 0;
   font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   z-index: 1;
+  display: block;
+  width: auto;
+  max-width: 90%;
   
   &::before {
     content: "";
@@ -203,36 +239,53 @@ const Button = styled(motion.button)`
   &:active {
     transform: translateY(1px);
   }
+
+  @media (max-width: 480px) {
+    padding: 0.7rem 1.8rem;
+    margin-top: 1.2rem;
+  }
 `;
 
 const ProgressDots = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 40px;
+  bottom: 25px;
   width: 100%;
   z-index: 3;
+  padding: 0 15px;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    bottom: 20px;
+  }
 `;
 
 const Dot = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: ${props => props.active ? '#9c88ff' : 'rgba(156, 136, 255, 0.3)'};
-  margin: 0 8px;
+  margin: 0 6px;
   transition: all 0.3s ease;
   cursor: pointer;
-  box-shadow: ${props => props.active ? '0 0 10px #9c88ff' : 'none'};
+  box-shadow: ${props => props.active ? '0 0 8px #9c88ff' : 'none'};
   
   &:hover {
     transform: scale(1.2);
+  }
+
+  @media (max-width: 480px) {
+    width: 8px;
+    height: 8px;
+    margin: 0 5px;
   }
 `;
 
 const Rose = styled.div`
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%239c88ff" d="M50 20c-5 0-10 3-10 8 0 5 5 8 10 8s10-3 10-8c0-5-5-8-10-8zm0 15c-10 0-20 5-20 15 0 10 10 15 20 15s20-5 20-15c0-10-10-15-20-15z"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;
@@ -240,17 +293,27 @@ const Rose = styled.div`
   z-index: 1;
   ${css`animation: ${roseFloat} 8s infinite ease-in-out;`}
   filter: drop-shadow(0 0 5px rgba(156, 136, 255, 0.7));
+
+  @media (max-width: 480px) {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const SparkleEffect = styled.div`
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background: white;
   border-radius: 50%;
   ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
   pointer-events: none;
   filter: blur(0.5px);
+
+  @media (max-width: 480px) {
+    width: 4px;
+    height: 4px;
+  }
 `;
 
 // Componente de presentación automática
@@ -272,8 +335,7 @@ const InvitationPresentation = () => {
           <Title>¡Te Invitamos a Mis XV Años!</Title>
           <Subtitle>Estrella Jimenez Martinez</Subtitle>
           <Text>
-            Mis padres <HighlightText>Reyes Rafael y Patricia Martinez Cedillo</HighlightText> y yo<br />
-            tenemos el honor de invitarte a celebrar este momento tan especial.
+            Mis padres <HighlightText>Reyes Rafael y Patricia Martinez Cedillo</HighlightText> y yo tenemos el honor de invitarte a celebrar este momento tan especial.
           </Text>
         </>
       )
@@ -284,8 +346,7 @@ const InvitationPresentation = () => {
           <Title>Padrinos de Honor</Title>
           <Subtitle>Abel y Guadalupe Martinez Cedillo</Subtitle>
           <Text>
-            Agradecemos su amor y apoyo en este día tan importante<br />
-            de mi transición a la vida adulta.
+            Agradecemos su amor y apoyo en este día tan importante de mi transición a la vida adulta.
           </Text>
         </>
       )
@@ -307,10 +368,7 @@ const InvitationPresentation = () => {
         <>
           <Title>Un Mensaje Especial</Title>
           <Text>
-            "He aprendido que estar con quienes amo<br />
-            es suficiente para ser feliz.<br />
-            Por eso deseo compartir contigo<br />
-            este momento que solo se vive una vez"
+            "He aprendido que estar con quienes amo es suficiente para ser feliz. Por eso deseo compartir contigo este momento que solo se vive una vez"
           </Text>
           <Subtitle>- Con cariño, Estrella</Subtitle>
         </>
@@ -321,8 +379,7 @@ const InvitationPresentation = () => {
         <>
           <Title>Confirma Tu Asistencia</Title>
           <Text>
-            <br />
-            para reservar tu lugar en esta celebración.
+            Por favor confirma tu asistencia para reservar tu lugar en esta celebración.
           </Text>
           <Button 
             onClick={() => setShowConfetti(true)}
@@ -339,12 +396,13 @@ const InvitationPresentation = () => {
   // Crear rosas flotantes
   useEffect(() => {
     const newRoses = [];
-    for (let i = 0; i < 8; i++) {
+    const roseCount = window.innerWidth < 480 ? 5 : 8;
+    for (let i = 0; i < roseCount; i++) {
       newRoses.push({
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: Math.random() * 20 + 30,
+        size: Math.random() * 15 + 20,
         delay: Math.random() * 5,
         duration: Math.random() * 5 + 5
       });
@@ -357,12 +415,12 @@ const InvitationPresentation = () => {
     const handleMouseMove = (e) => {
       if (Math.random() > 0.9) {
         setSparkles(prev => [
-          ...prev.slice(-15),
+          ...prev.slice(-10),
           {
             id: Date.now(),
             x: e.clientX,
             y: e.clientY,
-            size: Math.random() * 4 + 3,
+            size: Math.random() * 3 + 2,
             delay: Math.random() * 2
           }
         ]);
@@ -377,7 +435,7 @@ const InvitationPresentation = () => {
     // Cambio automático de slides
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000); // Cambia cada 7 segundos
+    }, 7000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -402,7 +460,7 @@ const InvitationPresentation = () => {
             width={windowSize.width}
             height={windowSize.height}
             recycle={false}
-            numberOfPieces={300}
+            numberOfPieces={200}
             gravity={0.2}
             colors={['#9c88ff', '#8a8aba', '#b8a8d8', '#d8c8f8']}
             onConfettiComplete={() => setShowConfetti(false)}
@@ -443,10 +501,10 @@ const InvitationPresentation = () => {
         <AnimatePresence mode='wait'>
           <motion.div
             key={currentSlide}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.7, ease: "easeInOut" }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <ContentBox>
               {slides[currentSlide].content}
