@@ -75,6 +75,9 @@ const ContentBox = styled(motion.div)`
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   
   &::before {
     content: "";
@@ -110,6 +113,7 @@ const Title = styled.h1`
   display: inline-block;
   max-width: 100%;
   padding: 0 10px;
+  text-align: center;
   
   &::after {
     content: "";
@@ -137,6 +141,7 @@ const Subtitle = styled.h2`
   ${css`animation: ${float} 4s infinite ease-in-out;`}
   max-width: 100%;
   padding: 0 10px;
+  text-align: center;
 
   @media (max-width: 480px) {
     font-size: clamp(1.3rem, 5vw, 1.8rem);
@@ -146,15 +151,17 @@ const Subtitle = styled.h2`
 const Text = styled.p`
   font-size: clamp(1rem, 3.8vw, 1.2rem);
   color: #e6e6fa;
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 1rem auto;
   letter-spacing: 0.3px;
-  max-width: 100%;
-  padding: 0 15px;
+  max-width: 90%;
+  padding: 0 10px;
+  text-align: center;
 
   @media (max-width: 480px) {
     font-size: clamp(0.95rem, 4vw, 1.1rem);
-    line-height: 1.5;
+    line-height: 1.6;
+    max-width: 95%;
   }
 `;
 
@@ -171,6 +178,7 @@ const EventDetail = styled.div`
   border-bottom: 1px solid rgba(138, 138, 186, 0.4);
   position: relative;
   max-width: 90%;
+  text-align: center;
   
   &::before, &::after {
     content: "✧";
@@ -191,6 +199,7 @@ const EventDetail = styled.div`
   @media (max-width: 480px) {
     padding: 0.8rem;
     margin: 1.2rem auto;
+    max-width: 95%;
   }
 `;
 
@@ -213,6 +222,7 @@ const Button = styled(motion.button)`
   display: block;
   width: auto;
   max-width: 90%;
+  text-align: center;
   
   &::before {
     content: "";
@@ -364,28 +374,18 @@ const InvitationPresentation = () => {
       )
     },
     {
-  content: (
-    <>
-      <Title>Un Mensaje Especial</Title>
-      <Text style={{ 
-        fontStyle: 'italic',
-        margin: '1.5rem auto',
-        padding: '0 10px',
-        maxWidth: '90%',
-        lineHeight: '1.7'
-      }}>
-        "He aprendido que estar con quienes amo es suficiente para ser feliz. Por eso deseo compartir contigo este momento que solo se vive una vez"
-      </Text>
-      <Subtitle style={{ 
-        marginTop: '1.5rem',
-        fontWeight: '600',
-        color: '#e6e6fa'
-      }}>
-        - Con cariño, Estrella
-      </Subtitle>
-    </>
-  )
-},
+      content: (
+        <>
+          <Title>Un Mensaje Especial</Title>
+          <Text style={{ fontStyle: 'italic', margin: '1.5rem 0' }}>
+            "He aprendido que estar con quienes amo es suficiente para ser feliz. Por eso deseo compartir contigo este momento que solo se vive una vez"
+          </Text>
+          <Subtitle style={{ marginTop: '1rem', fontWeight: '600' }}>
+            - Con cariño, Estrella
+          </Subtitle>
+        </>
+      )
+    },
     {
       content: (
         <>
