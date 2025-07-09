@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes, css } from 'styled-components';
 import ReactConfetti from 'react-confetti';
-import { useInView } from 'react-intersection-observer';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 // ======================
 // Animaciones
@@ -14,33 +12,22 @@ const float = keyframes`
   100% { transform: translateY(0px); }
 `;
 
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-`;
-
-const sparkle = keyframes`
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
-`;
-
 const textGlow = keyframes`
   0% { text-shadow: 0 0 5px rgba(176, 196, 222, 0.3); }
-  50% { text-shadow: 0 0 10px rgba(176, 196, 222, 0.5); }
+  50% { text-shadow: 0 0 15px rgba(100, 149, 237, 0.7); }
   100% { text-shadow: 0 0 5px rgba(176, 196, 222, 0.3); }
 `;
 
-const curtainOpen = keyframes`
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+const roseFloat = keyframes`
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+  50% { transform: translateY(-20px) rotate(10deg); opacity: 1; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
 `;
 
-const petalFall = keyframes`
-  0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+const sparkle = keyframes`
+  0% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.8); }
 `;
 
 // ======================
@@ -48,12 +35,11 @@ const petalFall = keyframes`
 // ======================
 const Container = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 50%, #1a1a3a 100%);
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
   color: #e6e6fa;
-  font-family: 'Cormorant Garamond', serif;
-  overflow-x: hidden;
+  font-family: 'Playfair Display', serif;
+  overflow: hidden;
   position: relative;
-  padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,205 +47,342 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const MainContent = styled.div`
-  padding: 2rem 1.5rem;
-  max-width: 600px;
-  width: 90%;
-  margin: 1rem auto;
-  text-align: center;
+const SlideContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  z-index: 2;
-  background: rgba(25, 25, 60, 0.9);
-  border-radius: 16px;
-  border: 1px solid rgba(70, 130, 180, 0.4);
-  box-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
-  backdrop-filter: blur(6px);
-  ${css`animation: ${curtainOpen} 1s ease-out forwards;`}
+  padding: 20px;
   box-sizing: border-box;
-
-  @media (max-width: 480px) {
-    padding: 1.5rem 1rem;
-    width: 95%;
-    max-width: 95%;
-    border-radius: 12px;
-    margin: 0.5rem auto;
-  }
-
-  @media (max-width: 360px) {
-    padding: 1.2rem 0.8rem;
-    width: 98%;
-  }
+  text-align: center;
+  z-index: 2;
 `;
 
-const AnimatedSection = styled.section`
-  margin: 1.5rem 0;
+const ContentBox = styled(motion.div)`
+  background: rgba(15, 15, 40, 0.85);
+  border-radius: 20px;
+  border: 1px solid rgba(100, 149, 237, 0.3);
+  box-shadow: 0 0 30px rgba(65, 105, 225, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 2.5rem;
+  max-width: 650px;
+  width: 90%;
+  margin: 0 auto;
   position: relative;
-
-  @media (max-width: 480px) {
-    margin: 1rem 0;
+  overflow: hidden;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.05) 0%, transparent 70%);
+    z-index: -1;
   }
-
-  @media (max-width: 360px) {
-    margin: 0.8rem 0;
+  
+  @media (max-width: 480px) {
+    padding: 1.8rem;
+    width: 95%;
   }
 `;
 
-const InvitationText = styled(motion.h1)`
-  font-size: clamp(2rem, 6vw, 3rem);
-  margin-bottom: 1rem;
+const Title = styled.h1`
+  font-size: clamp(2.2rem, 7vw, 3.5rem);
   color: #e6e6fa;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  font-family: 'Marcellus', serif;
-  line-height: 1.2;
+  font-family: 'Marcellus SC', serif;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
   ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-  word-wrap: break-word;
+  position: relative;
+  display: inline-block;
   
-  @media (max-width: 480px) {
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
-    margin-bottom: 0.8rem;
-  }
-
-  @media (max-width: 360px) {
-    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #8a8aba, transparent);
   }
 `;
 
-const NameText = styled(motion.h2)`
-  font-size: clamp(1.5rem, 5vw, 2.2rem);
-  margin: 1rem 0;
-  color: #e6e6fa;
+const Subtitle = styled.h2`
+  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  color: #b8a8d8;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  padding: 0.8rem 1.2rem;
-  display: inline-block;
-  border-bottom: 2px solid #8a8aba;
+  margin: 1.2rem 0;
   font-style: italic;
-  ${css`
-    animation: 
-      ${float} 3s ease-in-out infinite,
-      ${textGlow} 3s infinite ease-in-out;
-  `}
-  word-wrap: break-word;
-  
-  @media (max-width: 480px) {
-    font-size: clamp(1.4rem, 6vw, 2rem);
-    padding: 0.6rem 1rem;
-    margin: 0.8rem 0;
-  }
-
-  @media (max-width: 360px) {
-    font-size: clamp(1.3rem, 6vw, 1.8rem);
-    padding: 0.5rem 0.8rem;
-  }
+  ${css`animation: ${float} 4s infinite ease-in-out;`}
 `;
 
-const DetailsText = styled(motion.p)`
-  font-size: clamp(1rem, 3.5vw, 1.2rem);
-  margin: 0.8rem 0;
+const Text = styled.p`
+  font-size: clamp(1.1rem, 3.8vw, 1.3rem);
   color: #e6e6fa;
-  font-weight: 400;
-  padding: 0.6rem 1rem;
-  line-height: 1.5;
-  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-  word-wrap: break-word;
+  line-height: 1.7;
+  margin: 1.2rem 0;
+  letter-spacing: 0.5px;
+`;
+
+const HighlightText = styled.span`
+  font-weight: 600;
+  color: #9c88ff;
+  text-shadow: 0 0 8px rgba(156, 136, 255, 0.5);
+`;
+
+const EventDetail = styled.div`
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(138, 138, 186, 0.4);
+  border-bottom: 1px solid rgba(138, 138, 186, 0.4);
+  position: relative;
   
-  @media (max-width: 480px) {
-    font-size: clamp(0.95rem, 4vw, 1.1rem);
-    padding: 0.5rem 0.8rem;
-    margin: 0.6rem 0;
+  &::before, &::after {
+    content: "✧";
+    position: absolute;
+    color: #8a8aba;
+    font-size: 1.2rem;
+    top: -10px;
   }
-
-  @media (max-width: 360px) {
-    font-size: clamp(0.9rem, 4vw, 1rem);
-    padding: 0.4rem 0.6rem;
+  
+  &::before {
+    left: 10px;
   }
-`;
-
-const Icon = styled.span`
-  margin-right: 0.5rem;
-  display: inline-block;
-  ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
-
-  @media (max-width: 480px) {
-    margin-right: 0.3rem;
+  
+  &::after {
+    right: 10px;
   }
 `;
 
-const AcceptButton = styled(motion.button)`
-  background: transparent;
+const Button = styled(motion.button)`
+  background: linear-gradient(135deg, rgba(100, 149, 237, 0.3) 0%, rgba(138, 43, 226, 0.3) 100%);
   color: #e6e6fa;
   border: 1px solid #8a8aba;
-  padding: 0.8rem 1.8rem;
-  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
   border-radius: 50px;
   cursor: pointer;
-  margin: 1.2rem 0;
+  margin-top: 2.5rem;
   font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
   transition: all 0.3s ease;
-  ${css`animation: ${textGlow} 3s infinite ease-in-out;`}
-  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.5) 0%, rgba(138, 43, 226, 0.5) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
   
   &:hover {
-    background: rgba(70, 130, 180, 0.2);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(100, 149, 237, 0.4);
+    
+    &::before {
+      opacity: 1;
+    }
   }
   
-  @media (max-width: 480px) {
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
-    margin: 1rem 0;
-    min-width: 180px;
-  }
-
-  @media (max-width: 360px) {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-    min-width: 160px;
+  &:active {
+    transform: translateY(1px);
   }
 `;
 
-const Sparkle = styled.div`
+const ProgressDots = styled.div`
+  display: flex;
+  justify-content: center;
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.8);
+  bottom: 40px;
+  width: 100%;
+  z-index: 3;
+`;
+
+const Dot = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: ${props => props.active ? '#9c88ff' : 'rgba(156, 136, 255, 0.3)'};
+  margin: 0 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: ${props => props.active ? '0 0 10px #9c88ff' : 'none'};
+  
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
+const Rose = styled.div`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%239c88ff" d="M50 20c-5 0-10 3-10 8 0 5 5 8 10 8s10-3 10-8c0-5-5-8-10-8zm0 15c-10 0-20 5-20 15 0 10 10 15 20 15s20-5 20-15c0-10-10-15-20-15z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  z-index: 1;
+  ${css`animation: ${roseFloat} 8s infinite ease-in-out;`}
+  filter: drop-shadow(0 0 5px rgba(156, 136, 255, 0.7));
+`;
+
+const SparkleEffect = styled.div`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
   border-radius: 50%;
   ${css`animation: ${sparkle} 2s infinite ease-in-out;`}
   pointer-events: none;
-
-  @media (max-width: 480px) {
-    width: 3px;
-    height: 3px;
-  }
+  filter: blur(0.5px);
 `;
 
-// Componente de Página de Celebración
-const CelebrationPage = () => {
-  const [showConfetti, setShowConfetti] = useState(true);
+// Componente de presentación automática
+const InvitationPresentation = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [roses, setRoses] = useState([]);
   const [sparkles, setSparkles] = useState([]);
-  const navigate = useNavigate();
 
-  // Observadores de intersección
-  const [ref1, inView1] = useInView({ threshold: 0.1 });
-  const [ref3, inView3] = useInView({ threshold: 0.1 });
+  // Slides basados en las imágenes compartidas
+  const slides = [
+    {
+      content: (
+        <>
+          <Title>¡Te Invitamos a Mis XV Años!</Title>
+          <Subtitle>Estrella Jimenez Martinez</Subtitle>
+          <Text>
+            Mis padres <HighlightText>Reyes Rafael y Patricia Martinez Cedillo</HighlightText> y yo<br />
+            tenemos el honor de invitarte a celebrar este momento tan especial.
+          </Text>
+        </>
+      )
+    },
+    {
+      content: (
+        <>
+          <Title>Padrinos de Honor</Title>
+          <Subtitle>Abel y Guadalupe Martinez Cedillo</Subtitle>
+          <Text>
+            Agradecemos su amor y apoyo en este día tan importante<br />
+            de mi transición a la vida adulta.
+          </Text>
+        </>
+      )
+    },
+    {
+      content: (
+        <>
+          <Title>Detalles del Evento</Title>
+          <EventDetail>
+            <Text><HighlightText>SÁBADO 19 DE JULIO 2025</HighlightText></Text>
+            <Text>Misa: <HighlightText>12:30 PM</HighlightText></Text>
+            <Text>Comida: <HighlightText>3:00 PM</HighlightText></Text>
+          </EventDetail>
+        </>
+      )
+    },
+    {
+      content: (
+        <>
+          <Title>Un Mensaje Especial</Title>
+          <Text>
+            "He aprendido que estar con quienes amo<br />
+            es suficiente para ser feliz.<br />
+            Por eso deseo compartir contigo<br />
+            este momento que solo se vive una vez"
+          </Text>
+          <Subtitle>- Con cariño, Estrella</Subtitle>
+        </>
+      )
+    },
+    {
+      content: (
+        <>
+          <Title>Confirma Tu Asistencia</Title>
+          <Text>
+            <br />
+            para reservar tu lugar en esta celebración.
+          </Text>
+          <Button 
+            onClick={() => setShowConfetti(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Confirmar Asistencia
+          </Button>
+        </>
+      )
+    }
+  ];
+
+  // Crear rosas flotantes
+  useEffect(() => {
+    const newRoses = [];
+    for (let i = 0; i < 8; i++) {
+      newRoses.push({
+        id: i,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        size: Math.random() * 20 + 30,
+        delay: Math.random() * 5,
+        duration: Math.random() * 5 + 5
+      });
+    }
+    setRoses(newRoses);
+  }, []);
+
+  // Crear efectos de destello
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (Math.random() > 0.9) {
+        setSparkles(prev => [
+          ...prev.slice(-15),
+          {
+            id: Date.now(),
+            x: e.clientX,
+            y: e.clientY,
+            size: Math.random() * 4 + 3,
+            delay: Math.random() * 2
+          }
+        ]);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   useEffect(() => {
-    const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&display=swap';
-    fontLink.rel = 'stylesheet';
-    document.head.appendChild(fontLink);
+    // Cambio automático de slides
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 7000); // Cambia cada 7 segundos
 
-    const timer = setTimeout(() => {
-      setShowConfetti(false);
-    }, 3000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
+  useEffect(() => {
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -267,55 +390,44 @@ const CelebrationPage = () => {
       });
     };
 
-    // Efecto de destellos
-    const handleMouseMove = (e) => {
-      if (Math.random() > 0.95) {
-        setSparkles(prev => [
-          ...prev.slice(-10),
-          {
-            id: Date.now(),
-            x: e.clientX,
-            y: e.clientY,
-            size: Math.random() * 3 + 2,
-            delay: Math.random() * 2
-          }
-        ]);
-      }
-    };
-
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.head.removeChild(fontLink);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const closeMessage = () => {
-    navigate('/', { state: { fromCelebration: true } });
-  };
 
   return (
     <Container>
-      <AnimatePresence>
+      <AnimatePresence mode='wait'>
         {showConfetti && (
           <ReactConfetti
             width={windowSize.width}
             height={windowSize.height}
             recycle={false}
-            numberOfPieces={window.innerWidth < 480 ? 100 : 150}
-            gravity={0.15}
-            colors={['#b8a8d8', '#9888c8', '#d8c8f8', '#a898e8']}
+            numberOfPieces={300}
+            gravity={0.2}
+            colors={['#9c88ff', '#8a8aba', '#b8a8d8', '#d8c8f8']}
+            onConfettiComplete={() => setShowConfetti(false)}
           />
         )}
       </AnimatePresence>
 
-      {/* Efectos de destellos */}
+      {/* Rosas flotantes */}
+      {roses.map(rose => (
+        <Rose
+          key={rose.id}
+          style={{
+            left: `${rose.left}%`,
+            top: `${rose.top}%`,
+            width: `${rose.size}px`,
+            height: `${rose.size}px`,
+            animationDuration: `${rose.duration}s`,
+            animationDelay: `${rose.delay}s`
+          }}
+        />
+      ))}
+
+      {/* Efectos de destello */}
       {sparkles.map(sparkle => (
-        <Sparkle 
+        <SparkleEffect
           key={sparkle.id}
           style={{
             left: `${sparkle.x}px`,
@@ -327,204 +439,33 @@ const CelebrationPage = () => {
         />
       ))}
 
-      {/* Contenido principal */}
-      <MainContent>
-        <AnimatedSection ref={ref1}>
+      <SlideContainer>
+        <AnimatePresence mode='wait'>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: inView1 ? 1 : 0.8, y: inView1 ? 0 : 10 }}
-            transition={{ duration: 0.6 }}
+            key={currentSlide}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
           >
-            <InvitationText>¡Gracias por aceptar!</InvitationText>
+            <ContentBox>
+              {slides[currentSlide].content}
+            </ContentBox>
           </motion.div>
-        </AnimatedSection>
+        </AnimatePresence>
 
-        <AnimatedSection ref={ref3}>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: inView3 ? 1 : 0.8, x: inView3 ? 0 : -10 }}
-            transition={{ duration: 0.6 }}
-          >
-            <DetailsText>
-              Tu presencia hará que mis XV Años sean aún más especiales.
-            </DetailsText>
-            <DetailsText>
-              Estoy emocionada de compartir este día tan importante contigo.
-            </DetailsText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AcceptButton
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={closeMessage}
-        >
-          Volver al Inicio
-        </AcceptButton>
-      </MainContent>
+        <ProgressDots>
+          {slides.map((_, index) => (
+            <Dot 
+              key={index} 
+              active={index === currentSlide}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
+        </ProgressDots>
+      </SlideContainer>
     </Container>
   );
 };
 
-// Componente de Página Principal
-const MainPage = () => {
-  const [showConfetti, setShowConfetti] = useState(true);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-  const [sparkles, setSparkles] = useState([]);
-  const navigate = useNavigate();
-
-  // Observadores de intersección
-  const [ref1, inView1] = useInView({ threshold: 0.1 });
-  const [ref2, inView2] = useInView({ threshold: 0.1 });
-  const [ref3, inView3] = useInView({ threshold: 0.1 });
-
-  useEffect(() => {
-    // Cargar fuentes
-    const link1 = document.createElement('link');
-    link1.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&display=swap';
-    link1.rel = 'stylesheet';
-    document.head.appendChild(link1);
-
-    // Manejar redimensionamiento
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    // Efecto de destellos
-    const handleMouseMove = (e) => {
-      if (Math.random() > 0.95) {
-        setSparkles(prev => [
-          ...prev.slice(-10),
-          {
-            id: Date.now(),
-            x: e.clientX,
-            y: e.clientY,
-            size: Math.random() * 3 + 2,
-            delay: Math.random() * 2
-          }
-        ]);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  // Confetti inicial
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowConfetti(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleAccept = () => {
-    setShowConfetti(true);
-    setTimeout(() => {
-      setShowConfetti(false);
-      navigate('/celebration');
-    }, 800);
-  };
-
-  return (
-    <Container>
-      <AnimatePresence>
-        {showConfetti && (
-          <ReactConfetti
-            width={windowSize.width}
-            height={windowSize.height}
-            recycle={false}
-            numberOfPieces={window.innerWidth < 480 ? 100 : 150}
-            gravity={0.15}
-            colors={['#8a8aba', '#6a6a9a', '#b8b8d8', '#9a9ac8']}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Efectos de destellos */}
-      {sparkles.map(sparkle => (
-        <Sparkle 
-          key={sparkle.id}
-          style={{
-            left: `${sparkle.x}px`,
-            top: `${sparkle.y}px`,
-            width: `${sparkle.size}px`,
-            height: `${sparkle.size}px`,
-            animationDelay: `${sparkle.delay}s`
-          }}
-        />
-      ))}
-
-      {/* Contenido principal */}
-      <MainContent>
-        <AnimatedSection ref={ref1}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: inView1 ? 1 : 0.8, y: inView1 ? 0 : 10 }}
-            transition={{ duration: 0.6 }}
-          >
-            <InvitationText>¡Te invito a mis XV!</InvitationText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AnimatedSection ref={ref2}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: inView2 ? 1 : 0.8, scale: inView2 ? 1 : 0.98 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <NameText>Estrella Jiménez Martínez</NameText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AnimatedSection ref={ref3}>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: inView3 ? 1 : 0.8, x: inView3 ? 0 : -10 }}
-            transition={{ duration: 0.6 }}
-          >
-            <DetailsText>
-              <Icon>⏰</Icon> Sábado 19 de Julio de 2025 a las 14:00 hrs
-            </DetailsText>
-            <DetailsText>
-              <Icon>📍</Icon> Pueblo Nuevo Tlamimilolpan
-            </DetailsText>
-          </motion.div>
-        </AnimatedSection>
-
-        <AcceptButton
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={handleAccept}
-        >
-          Aceptar Invitación
-        </AcceptButton>
-      </MainContent>
-    </Container>
-  );
-};
-
-// Componente App principal
-const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/celebration" element={<CelebrationPage />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
+export default InvitationPresentation;
