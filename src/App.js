@@ -55,7 +55,7 @@ const SlideContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Cambiado de center a flex-start */
   position: relative;
   padding: 15px;
   box-sizing: border-box;
@@ -72,7 +72,7 @@ const ContentBox = styled(motion.div)`
   padding: 1.5rem;
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 0 0 20px; /* Cambiado el margen para alinear a la izquierda */
   position: relative;
   overflow: hidden;
   display: flex;
@@ -93,11 +93,13 @@ const ContentBox = styled(motion.div)`
   @media (max-width: 480px) {
     padding: 1.2rem;
     max-width: 95%;
+    margin: 0 0 0 10px; /* Ajuste para móviles */
   }
 
   @media (max-width: 360px) {
     padding: 1rem;
     max-width: 98%;
+    margin: 0 0 0 5px; /* Ajuste para móviles pequeños */
   }
 `;
 
