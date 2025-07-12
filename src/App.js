@@ -348,6 +348,18 @@ const SparkleEffect = styled.div`
   }
 `;
 
+const LocationLink = styled.a`
+  color: #9c88ff;
+  text-decoration: none;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(156, 136, 255, 0.5);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    text-shadow: 0 0 12px rgba(156, 136, 255, 0.8);
+  }
+`;
+
 const Star = styled.div`
   position: absolute;
   width: ${props => props.size || '14px'};
@@ -366,15 +378,41 @@ const Star = styled.div`
   }
 `;
 
+const ThankYouMessage = styled(motion.div)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(15, 15, 40, 0.95);
+  padding: 20px 30px;
+  border-radius: 15px;
+  border: 1px solid #9c88ff;
+  box-shadow: 0 0 20px rgba(156, 136, 255, 0.6);
+  z-index: 100;
+  text-align: center;
+`;
+
 // Componente principal
 const InvitationPresentation = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
   const [decorations, setDecorations] = useState([]);
+
+  // Función para manejar la confirmación
+  const handleConfirmation = () => {
+    setShowConfetti(true);
+    setShowThankYou(true);
+    
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+      setShowThankYou(false);
+    }, 3000);
+  };
 
   // Slides con contenido mejorado
   const slides = [
@@ -406,9 +444,20 @@ const InvitationPresentation = () => {
           <Title>Detalles del Evento</Title>
           <EventDetail>
             <Text><HighlightText>SÁBADO 19 DE JULIO 2025</HighlightText></Text>
-            <Text>Ceremonia: <HighlightText>12:30 PM</HighlightText></Text>
-            <Text>Recepción: <HighlightText>3:00 PM</HighlightText></Text>
-            <Text style={{marginTop: '12px'}}>Salón "Jardines del Cielo"</Text>
+            <Text>Hora: <HighlightText>3:00 PM</HighlightText></Text>
+            <Text>
+              Ubicación:{' '}
+              <LocationLink 
+                href="https://www.google.com/maps/place/Pueblo+Nuevo+Tlamimilolpan" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                Pueblo Nuevo Tlamimilolpan
+              </LocationLink>
+            </Text>
+            <Text style={{marginTop: '12px', fontStyle: 'italic'}}>
+              "Los espero en mi casa 🎉🥳"
+            </Text>
           </EventDetail>
         </>
       )
@@ -431,10 +480,10 @@ const InvitationPresentation = () => {
         <>
           <Title>Confirma Tu Asistencia</Title>
           <Text>
-            Por favor confirma tu asistencia antes del 10 de julio para reservar tu lugar en esta celebración inolvidable.
+            Por favor confirma tu asistencia 🥳🎉
           </Text>
           <Button 
-            onClick={() => setShowConfetti(true)}
+            onClick={handleConfirmation}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -560,6 +609,22 @@ const InvitationPresentation = () => {
 
   return (
     <Container>
+      {/* Mensaje de agradecimiento */}
+      <AnimatePresence>
+        {showThankYou && (
+          <ThankYouMessage
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Text style={{ fontSize: '1.2rem', color: '#e6e6fa', margin: 0 }}>
+              ¡Gracias por aceptar! Te espero en mi fiesta 🥳🎉
+            </Text>
+          </ThankYouMessage>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode='wait'>
         {showConfetti && (
           <ReactConfetti
