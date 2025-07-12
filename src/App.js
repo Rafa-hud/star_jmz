@@ -422,7 +422,7 @@ const InvitationPresentation = () => {
           <Title>¡Te Invitamos a Mis XV Años!</Title>
           <Subtitle>Estrella Jiménez Martínez</Subtitle>
           <Text>
-            Mis padres <HighlightText>Reyes Rafael y Patricia Martínez Cedillo</HighlightText> y yo tenemos el honor de invitarte a celebrar este momento tan especial en mi vida.
+            Mis padres <HighlightText>Reyes Rafael y Patricia </HighlightText> y yo tenemos el honor de invitarte a celebrar este momento tan especial en mi vida.
           </Text>
         </>
       )
@@ -431,7 +431,7 @@ const InvitationPresentation = () => {
       content: (
         <>
           <Title>Padrinos de Honor</Title>
-          <Subtitle>Abel y Guadalupe Martínez Cedillo</Subtitle>
+          <Subtitle>Abel Benitez y Guadalupe Martínez</Subtitle>
           <Text>
             Con profundo agradecimiento por su amor y apoyo incondicional en este día tan significativo de mi transición a la vida adulta.
           </Text>
@@ -448,11 +448,11 @@ const InvitationPresentation = () => {
             <Text>
               Ubicación:{' '}
               <LocationLink 
-                href="https://www.google.com/maps/place/Pueblo+Nuevo+Tlamimilolpan" 
+                href="https://maps.app.goo.gl/yLJB8Ki7ZmtVH32Z7" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                Pueblo Nuevo Tlamimilolpan
+                Pueblo Nuevo Tlamimilolpan 📍
               </LocationLink>
             </Text>
             <Text style={{marginTop: '12px', fontStyle: 'italic'}}>
